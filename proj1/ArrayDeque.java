@@ -48,6 +48,9 @@ public class ArrayDeque<Item> extends Deque<Item>{
     }
     @Override
     public void printDeque(){
+        if (isEmpty()){
+            return;
+        }
         int index = addOne(nextFirst);
         for (int i = 0; i < size; i += 1){
             System.out.print(items[index] + " ");
@@ -57,7 +60,7 @@ public class ArrayDeque<Item> extends Deque<Item>{
     @Override
     public Item removeFirst(){
         if (isEmpty()) {
-            System.out.print("Deque already empty!");
+            System.out.println("Deque already empty!");
             return null;
         }
         int first = addOne(nextFirst);
@@ -69,7 +72,7 @@ public class ArrayDeque<Item> extends Deque<Item>{
     @Override
     public Item removeLast(){
         if (isEmpty()) {
-            System.out.print("Deque already empty!");
+            System.out.println("Deque already empty!");
             return null;
         }
         int last = minusOne(nextLast);
