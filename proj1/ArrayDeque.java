@@ -20,6 +20,16 @@ public class ArrayDeque<Item> extends Deque<Item>{
         items = (Item[]) new Object[maxSpan];
         size = 0;
         nextFirst = 0;
+        // Why next last is the 1? why not 0?
+        // for example, if I init an empty queue,
+        // then addLast("ol"), then I get the
+        // array: [null, "ol", null, null...]
+        // which seems to be wired for me.
+
+        // Also such complex index management,
+        // will make the re-size very complex.
+        // and the benefits of performace is
+        // limited.
         nextLast = Math.min(1, maxSpan-1);
     }
     @Override
@@ -97,6 +107,8 @@ public class ArrayDeque<Item> extends Deque<Item>{
         }
         return index;
     }
+
+    // Not get point, why you need to mode the length.
     private int addOne(int index){
         return (index + 1) % items.length;
     }

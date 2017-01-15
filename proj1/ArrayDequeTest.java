@@ -108,4 +108,18 @@ public class ArrayDequeTest extends TestCase {
 		assertEquals("90", deque.get(0));
 		assertEquals(null, deque.get(-1));
 	}
+
+	public void testPressAdd() {
+		int totalLength = 50;
+		for (int i = 0; i < totalLength; i++) {
+			deque.addLast("ab" + i);
+		}
+		assertEquals(totalLength, deque.size());
+		deque.printDeque();
+		int i = 0;
+		while (i < totalLength) {
+			assertEquals("ab" + i, deque.removeFirst());
+			i++;
+		}
+	}
 }
