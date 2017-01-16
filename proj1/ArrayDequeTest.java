@@ -9,7 +9,7 @@ public class ArrayDequeTest extends TestCase {
 
 	// Methods run before each unit test case.
 	protected void setUp() {
-		this.deque = new ArrayDeque<Integer>();
+		this.deque = new ArrayDeque<>();
 	}
 
 	// method can be run after each unit test is
