@@ -1,89 +1,118 @@
-/** Performs some basic linked list tests. */
-public class LinkedListDequeTest {
-	
-	/* Utility method for printing out empty checks. */
-	public static boolean checkEmpty(boolean expected, boolean actual) {
-		if (expected != actual) {
-			System.out.println("isEmpty() returned " + actual + ", but expected: " + expected);
-			return false;
+/**
+ * Created by juanyan.li on 1/8/17.
+ */
+import junit.framework.*;
+
+public class LinkedListDequeTest extends TestCase {
+	protected LinkedListDeque<String> deque;
+
+	// Methods run before each unit test case.
+	protected void setUp() {
+		this.deque = new LinkedListDeque<>();
+	}
+
+	public void testInitSizeZero() {
+		assertEquals(deque.size(), 0);
+		assertEquals(true, deque.isEmpty());
+	}
+
+	public void testOperationOnEmptyDeque() {
+		assertEquals(null, deque.removeFirst());
+		assertEquals(null, deque.removeLast());
+		assertEquals(null, deque.get(0));
+		assertEquals(deque.size(), 0);
+		assertEquals(true, deque.isEmpty());
+	}
+
+	/**
+	 * Test case when we first add 51, the queue
+	 * performs good. Then we add 31, the queue
+	 * performs good too.
+	 **/
+	public void testAddFirst() {
+		deque.addFirst("51");
+		assertEquals(1, deque.size());
+		assertEquals(false, deque.isEmpty());
+		assertEquals("51", deque.get(0));
+
+		deque.addFirst("31");
+		assertEquals(2, deque.size());
+		assertEquals(false, deque.isEmpty());
+		assertEquals("51", deque.get(1));
+		assertEquals("31", deque.get(0));
+		assertEquals(null, deque.get(2));
+	}
+
+	public void testAddLast() {
+		deque.addLast("67");
+		assertEquals(1, deque.size());
+		assertEquals(false, deque.isEmpty());
+		assertEquals("67", deque.get(0));
+
+		deque.addLast("59");
+		assertEquals(2, deque.size());
+		assertEquals(false, deque.isEmpty());
+		assertEquals("67", deque.get(0));
+		assertEquals("59", deque.get(1));
+
+		deque.addFirst("88");
+		assertEquals(3, deque.size());
+		assertEquals(false, deque.isEmpty());
+		assertEquals("88", deque.get(0));
+		assertEquals("67", deque.get(1));
+		assertEquals("59", deque.get(2));
+	}
+
+	public void testRemoveFirst() {
+		deque.addLast("UI");
+		assertEquals(deque.removeFirst(), "UI");
+		assertEquals(0, deque.size());
+		assertEquals(true, deque.isEmpty());
+		assertEquals(null, deque.removeFirst());
+
+		deque.addLast("kl");
+		deque.addLast("jk");
+		assertEquals(2, deque.size());
+		assertEquals("kl", deque.removeFirst());
+		assertEquals(1, deque.size());
+		assertEquals(false, deque.isEmpty());
+	}
+
+	public void testRemoveLast() {
+		deque.addLast("UI");
+		assertEquals(deque.removeLast(), "UI");
+		assertEquals(0, deque.size());
+		assertEquals(true, deque.isEmpty());
+		assertEquals(null, deque.removeFirst());
+
+		deque.addLast("kl");
+		deque.addLast("jk");
+		assertEquals(2, deque.size());
+		assertEquals("jk", deque.removeLast());
+		assertEquals(1, deque.size());
+		assertEquals(false, deque.isEmpty());
+	}
+
+	public void testGet() {
+		assertEquals(null, deque.get(2));
+		assertEquals(null, deque.get(-1));
+
+		deque.addLast("90");
+		assertEquals("90", deque.get(0));
+		assertEquals(null, deque.get(-1));
+	}
+
+	public void testPressAdd() {
+		int totalLength = 50;
+		for (int i = 0; i < totalLength; i += 1) {
+			deque.addLast("ab" + i);
 		}
-		return true;
-	}
-
-	/* Utility method for printing out empty checks. */
-	public static boolean checkSize(int expected, int actual) {
-		if (expected != actual) {
-			System.out.println("size() returned " + actual + ", but expected: " + expected);
-			return false;
-		}
-		return true;
-	}
-
-	/* Prints a nice message based on whether a test passed. 
-	 * The \n means newline. */
-	public static void printTestStatus(boolean passed) {
-		if (passed) {
-			System.out.println("Test passed!\n");
-		} else {
-			System.out.println("Test failed!\n");
+		assertEquals(totalLength, deque.size());
+		deque.printDeque();
+		int i = 0;
+		while (i < totalLength) {
+			assertEquals("ab" + i, deque.removeFirst());
+			i += 1;
 		}
 	}
-
-	/** Adds a few things to the list, checking isEmpty() and size() are correct, 
-	  * finally printing the results. 
-	  *
-	  * && is the "and" operation. */
-	public static void addIsEmptySizeTest() {
-		System.out.println("Running add/isEmpty/Size test.");
-		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-		/*
-		LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
-
-		boolean passed = checkEmpty(true, lld1.isEmpty());
-
-		lld1.addFirst("front");
-		passed = checkSize(1, lld1.size()) && passed;
-		passed = checkEmpty(false, lld1.isEmpty()) && passed;
-
-		lld1.addLast("middle");
-		passed = checkSize(2, lld1.size()) && passed;
-
-		lld1.addLast("back");
-		passed = checkSize(3, lld1.size()) && passed;
-
-		System.out.println("Printing out deque: ");
-		lld1.printDeque();
-
-		printTestStatus(passed);
-		*/
-	}
-
-	/** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
-	public static void addRemoveTest() {
-
-		System.out.println("Running add/remove test.");
-
-		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-		/*
-		LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
-		// should be empty 
-		boolean passed = checkEmpty(true, lld1.isEmpty());
-
-		lld1.addFirst(10);
-		// should not be empty 
-		passed = checkEmpty(false, lld1.isEmpty()) && passed;
-
-		lld1.removeFirst();
-		// should be empty 
-		passed = checkEmpty(true, lld1.isEmpty()) && passed;
-
-		printTestStatus(passed);
-		*/
-	}
-
-	public static void main(String[] args) {
-		System.out.println("Running tests.\n");
-		addIsEmptySizeTest();
-		addRemoveTest();
-	}
-} 
+}

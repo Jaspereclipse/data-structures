@@ -32,8 +32,8 @@ public class ArrayDequeTest extends TestCase {
 
 	/**
 	 * Test case when we first add 51, the queue
-	 * performas good. Then we add 31, the queue
-	 * performas good too.
+	 * performs good. Then we add 31, the queue
+	 * performs good too.
 	 **/
 	public void testAddFirst() {
 		deque.addFirst("51");
@@ -110,7 +110,7 @@ public class ArrayDequeTest extends TestCase {
 
 	public void testPressAdd() {
 		int totalLength = 50;
-		for (int i = 0; i < totalLength; i++) {
+		for (int i = 0; i < totalLength; i += 1) {
 			deque.addLast("ab" + i);
 		}
 		assertEquals(totalLength, deque.size());
@@ -118,7 +118,7 @@ public class ArrayDequeTest extends TestCase {
 		int i = 0;
 		while (i < totalLength) {
 			assertEquals("ab" + i, deque.removeFirst());
-			i++;
+			i += 1;
 		}
 	}
 }
