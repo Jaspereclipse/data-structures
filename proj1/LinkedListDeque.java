@@ -44,12 +44,7 @@ public class LinkedListDeque<Item> extends Deque<Item>{
     }
 
     @Override
-    public boolean isEmpty(){
-        if (size > 0){
-            return false;
-        }
-        return true;
-    }
+    public boolean isEmpty(){ return (size == 0); }
 
     @Override
     public int size() {
@@ -66,14 +61,12 @@ public class LinkedListDeque<Item> extends Deque<Item>{
             System.out.print(current.item + " ");
             current = current.next;
         }
+        System.out.print("\n");
     }
 
     @Override
     public Item removeFirst(){
-        if (isEmpty()) {
-            System.out.println("Deque already empty!");
-            return null;
-        }
+        if (isEmpty()) { return null; }
         Item item = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
@@ -83,13 +76,11 @@ public class LinkedListDeque<Item> extends Deque<Item>{
 
     @Override
     public Item removeLast(){
-        if (isEmpty()) {
-            System.out.println("Deque already empty!");
-            return null;
-        }
+        if (isEmpty()) { return null; }
         Item item = sentinel.prev.item;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
+        size -= 1;
         return item;
     }
 
@@ -114,6 +105,5 @@ public class LinkedListDeque<Item> extends Deque<Item>{
             }
             return current.item;
         }
-
     }
 }

@@ -1,4 +1,7 @@
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.lang.Math;
+import java.util.Arrays;
 
 /**
  * Created by juanyan.li on 1/8/17.
@@ -17,41 +20,27 @@ public class ArrayDeque<Item> extends Deque<Item>{
         nextLast = 1;
     }
     public ArrayDeque(int maxSpan){
-        items = (Item[]) new Object[maxSpan];
+        items = (Item[]) new Object[Math.max(2, maxSpan)];
         size = 0;
         nextFirst = 0;
-        // Why next last is the 1? why not 0?
-        // for example, if I init an empty queue,
-        // then addLast("ol"), then I get the
-        // array: [null, "ol", null, null...]
-        // which seems to be wired for me.
-
-        // Also such complex index management,
-        // will make the re-size very complex.
-        // and the benefits of performace is
-        // limited.
-        nextLast = Math.min(1, maxSpan-1);
+        nextLast = 1;
     }
     @Override
     public void addFirst(Item item){
+        if (size == items.length) { resize(); }
         items[nextFirst] = item;
         nextFirst = minusOne(nextFirst);
-        increaseSizeByOne();
+        size += 1;
     }
     @Override
     public void addLast(Item item){
+        if (size == items.length) { resize(); }
         items[nextLast] = item;
         nextLast = addOne(nextLast);
-        increaseSizeByOne();
+        size += 1;
     }
     @Override
-    public boolean isEmpty(){
-        if (size > 0){
-            return false;
-        } else {
-            return true;
-        }
-    }
+    public boolean isEmpty(){ return (size == 0); }
     @Override
     public int size(){
         return size;
@@ -70,32 +59,28 @@ public class ArrayDeque<Item> extends Deque<Item>{
     @Override
     public Item removeFirst(){
         if (isEmpty()) {
-            System.out.println("Deque already empty!");
             return null;
         }
-        int first = addOne(nextFirst);
-        Item item = items[first];
-        items[first] = null;
+        nextFirst = addOne(nextFirst);
+        Item item = items[nextFirst];
+        items[nextFirst] = null;
         size -= 1;
         return item;
     }
     @Override
     public Item removeLast(){
         if (isEmpty()) {
-            System.out.println("Deque already empty!");
             return null;
         }
-        int last = minusOne(nextLast);
-        Item item = items[last];
-        items[last] = null;
+        nextLast = minusOne(nextLast);
+        Item item = items[nextLast];
+        items[nextLast] = null;
         size -= 1;
         return item;
     }
     @Override
     public Item get(int index){
-        if (index > size - 1 || isEmpty()){
-            return null;
-        }
+        if (index > size - 1 || isEmpty()){ return null; }
         int first = addOne(nextFirst);
         return items[(first + index) % items.length];
     }
@@ -107,12 +92,21 @@ public class ArrayDeque<Item> extends Deque<Item>{
         }
         return index;
     }
-
     // Not get point, why you need to mode the length.
     private int addOne(int index){
         return (index + 1) % items.length;
     }
-    private void increaseSizeByOne() {
-        size = Math.min(size + 1, items.length);
+    private void align() {
+        int first = addOne(nextFirst);
+        int last = minusOne(nextLast);
+        if (last - first == size - 1) { return; }
+        items = ArrayUtils.addAll(Arrays.copyOfRange(items, first, size),
+                Arrays.copyOfRange(items, 0, first));
+    }
+    private void resize(){
+        align();
+        items = Arrays.copyOf(items, size*2);
+        nextFirst = items.length - 1;
+        nextLast = size;
     }
 }
